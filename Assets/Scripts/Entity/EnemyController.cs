@@ -27,6 +27,26 @@ namespace HackedDesign
             }
         }
 
+        public void Damage(string attacker, WeaponType type, int amount)
+        {
+            Debug.Log(this.name + " took :" +type.ToString() + " damage: " + amount + " from: " + attacker);
+            health -= amount;
+            //GameData.Instance.health -= amount;
+            if(health < 0)
+            {
+                health = 0;
+
+                Debug.Log("Creature is dead");
+                    //Game.Instance.SetDead()
+               
+            }
+        }
+
+        public void Die()
+        {
+            this.gameObject.SetActive(false);
+        }
+
         public void Spawn()
         {
 
@@ -41,7 +61,6 @@ namespace HackedDesign
                 //Debug.Log("player attack");  
                 agent.Stop();
                 LookAt(Game.Instance.Player.transform.position);
-                Debug.Log("Attack Player");
                 weapons.Attack(Game.Instance.Player.transform.position);
             }
             else if(distanceToPlayer <= detectionRadius)

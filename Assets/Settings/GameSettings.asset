@@ -28,12 +28,63 @@ MonoBehaviour:
   midday: 36000
   dusk: 61200
   night: 72000
+  weaponSettings:
+  - type: 5
+    speed: 1
+    distance: 2
+    missChance: 0.5
+    minDamage: 1
+    maxDamage: 10
+  - type: 6
+    speed: 0.45
+    distance: 3
+    missChance: 0.3
+    minDamage: 1
+    maxDamage: 5
+  - type: 0
+    speed: 0.4
+    distance: 2
+    missChance: 0.2
+    minDamage: 1
+    maxDamage: 20
+  - type: 1
+    speed: 0.3
+    distance: 2
+    missChance: 0.2
+    minDamage: 5
+    maxDamage: 30
+  - type: 2
+    speed: 1
+    distance: 10
+    missChance: 0
+    minDamage: 20
+    maxDamage: 30
+  - type: 3
+    speed: 1
+    distance: 10
+    missChance: 0.05
+    minDamage: 50
+    maxDamage: 100
+  - type: 4
+    speed: 1
+    distance: 10
+    missChance: 0.05
+    minDamage: 50
+    maxDamage: 100
   punchSpeed: 0.4
+  punchDistance: 2
+  minPunchDamage: 1
+  maxPunchDamage: 20
   knifeSpeed: 0.2
+  knifeDistance: 2
   spearSpeed: 0.5
   rifleSpeed: 1
   molotovSpeed: 1
+  rifleDistance: 20
+  clawDistance: 2
+  biteDistance: 3
   treeEnemyChance: 0.25
+  missChance: 0.25
   rainChance: 0.915
   stormChance: 0.05
   playerSpawn: {x: 100, y: 0, z: 100}

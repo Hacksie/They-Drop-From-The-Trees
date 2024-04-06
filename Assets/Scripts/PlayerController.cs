@@ -8,6 +8,7 @@ namespace HackedDesign
     public class PlayerController : MonoBehaviour
     {
         [Header("GameObjects")]
+        [SerializeField] private CharacterController characterController;
         [SerializeField] private Agent agent;
         [SerializeField] private WeaponsController weapons;
         [SerializeField] private CampController camp;
@@ -23,6 +24,8 @@ namespace HackedDesign
         [SerializeField] private bool character = true;
         [SerializeField] private Vector3 lookAtOffset = new Vector3(0, 2, 0);
 
+        private InputAction moveAction;
+        private InputAction lookAction;
         private InputAction mousePosAction;
         private InputAction primaryAction;
         private InputAction secondaryAction;
@@ -49,6 +52,7 @@ namespace HackedDesign
                 playerInput = GetComponent<PlayerInput>();
             }
 
+            moveAction = playerInput.actions["Move"];
             mousePosAction = playerInput.actions["Mouse Position"];
             primaryAction = playerInput.actions["Primary Action"];
             secondaryAction = playerInput.actions["Secondary Action"];
@@ -97,6 +101,25 @@ namespace HackedDesign
             weapons.SwitchWeapon(4);
         }
 
+        public void Damage(string attacker, WeaponType type, int amount)
+        {
+            Debug.Log("player took :" +type.ToString() + " damage: " + amount + " from: " + attacker);
+            GameData.Instance.health -= amount;
+            if(GameData.Instance.health < 0)
+            {
+                GameData.Instance.health = 0;
+                if(Game.Instance.Settings.invulnerable)
+                {
+                    Debug.Log("Player would have died but is invulnerable");
+                }
+                else
+                {
+                    Debug.Log("Player is dead");
+                    //Game.Instance.SetDead()
+                }
+            }
+        }
+
         public void ToggleCamp()
         {
             if (GameData.Instance.inShade)
@@ -119,8 +142,17 @@ namespace HackedDesign
 
         public void UpdateBehaviour()
         {
+            //var moveInput = moveAction.ReadValue<Vector2>();
+
+            //var movement = (transform.forward * moveInput.y + transform.right * moveInput.x) * 3 * Time.deltaTime;
+
+
+            //characterController.Move(movement);
+
+
             var mousePosition = GetMousePosition();
             var worldPos = GetWorldMousePosition(mousePosition);
+            
             if (primaryAction.IsPressed() && !EventSystem.current.IsPointerOverGameObject() && !GameData.Instance.isCamping)
             {
                 agent.MoveTo(worldPos);

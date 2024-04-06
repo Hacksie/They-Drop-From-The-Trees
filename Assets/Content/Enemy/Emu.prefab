@@ -237,6 +237,7 @@ GameObject:
   - component: {fileID: 2193399760325768189}
   - component: {fileID: 372183399991304287}
   - component: {fileID: 8266019756679870170}
+  - component: {fileID: -8139862007224436530}
   - component: {fileID: 6701446238536451920}
   - component: {fileID: 1762358785884623899}
   - component: {fileID: 431581806676096735}
@@ -244,7 +245,7 @@ GameObject:
   - component: {fileID: 3194536243312023733}
   m_Layer: 3
   m_Name: Emu
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -302,6 +303,33 @@ MonoBehaviour:
   health: 100
   rotateSpeed: 60
   weapons: {fileID: 6701446238536451920}
+--- !u!114 &-8139862007224436530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5544091945435596905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5d8bbef7e3d2454284d6a0e01ed1cd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8266019756679870170}
+        m_TargetAssemblyTypeName: HackedDesign.EnemyController, Assembly-CSharp
+        m_MethodName: Damage
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &6701446238536451920
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -319,6 +347,7 @@ MonoBehaviour:
   weaponObjects: []
   spearPrefab: {fileID: 0}
   molotovPrefab: {fileID: 0}
+  enemy: 1
 --- !u!195 &1762358785884623899
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -375,7 +404,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5544091945435596905}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: f2ce7a7be94363e4ea62e1c6ff0494d6, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0

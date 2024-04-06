@@ -25,10 +25,12 @@ namespace HackedDesign
         void Awake()
         {
             HasWeapon.Add(WeaponType.Punch, true);
-            HasWeapon.Add(WeaponType.Knife, true);
-            HasWeapon.Add(WeaponType.Spear, true);
-            HasWeapon.Add(WeaponType.Rifle, true);
-            HasWeapon.Add(WeaponType.Molotov, true);
+            HasWeapon.Add(WeaponType.Knife, false);
+            HasWeapon.Add(WeaponType.Spear, false);
+            HasWeapon.Add(WeaponType.Rifle, false);
+            HasWeapon.Add(WeaponType.Molotov, false);
+            HasWeapon.Add(WeaponType.Claw, true);
+            HasWeapon.Add(WeaponType.Bite, true);
         }
 
         void Start()
@@ -76,10 +78,10 @@ namespace HackedDesign
             switch (currentWeapon)
             {
                 case WeaponType.Punch:
-                    AttackPunch();
+                    AttackPunch(target);
                     break;
                 case WeaponType.Knife:
-                    AttackKnife();
+                    AttackKnife(target);
                     break;
                 case WeaponType.Spear:
                     AttackSpear(target);
@@ -113,33 +115,103 @@ namespace HackedDesign
 
         }
 
+        public WeaponSettings GetWeaponSettings(WeaponType weapon) => Game.Instance.Settings.weaponSettings.FirstOrDefault(w => w.type == weapon);
+
+
         public void AttackBite(Vector3 target)
         {
-            if(lastAttack + Game.Instance.Settings.spearSpeed > Time.time)
-            {
-                return;
-            }
-
-            lastAttack = Time.time;
-
-            Debug.Log("Attack Player");
+            AttackMelee(WeaponType.Bite, target);
         }
 
         public void AttackClaw(Vector3 target)
         {
-            if(lastAttack + Game.Instance.Settings.spearSpeed > Time.time)
+            AttackMelee(WeaponType.Claw, target);
+        }
+
+        private void AttackPunch(Vector3 target)
+        {
+            AttackMelee(WeaponType.Punch, target);
+
+            // Animate ->
+            lastPunch = !lastPunch;
+
+            if (Random.value < 0.2f) // small chance to repeat
+            {
+                lastPunch = !lastPunch;
+            }
+
+            if (animator != null && animator.hasBoundPlayables)
+            {
+                if (lastPunch)
+                {
+                    animator.SetTrigger("Punch Left");
+                }
+                else
+                {
+                    animator.SetTrigger("Punch Right");
+                }
+            }
+        }
+
+        private void AttackKnife(Vector3 target)
+        {
+            AttackMelee(WeaponType.Knife, target);
+
+            lastPunch = !lastPunch;
+
+            if (Random.value < 0.2f) // small chance to repeat
+            {
+                lastPunch = !lastPunch;
+            }
+
+
+            if (lastPunch)
+            {
+                animator.SetTrigger("Knife Swing 1");
+            }
+            else
+            {
+                animator.SetTrigger("Knife Swing 2");
+            }
+        }
+
+        private void AttackMelee(WeaponType type, Vector3 target)
+        {
+            var setting = GetWeaponSettings(type);
+            if (setting == null)
+            {
+                Debug.LogError("No weapon settings for: " + type, this);
+            }
+
+            if (lastAttack + setting.speed > Time.time)
             {
                 return;
             }
 
             lastAttack = Time.time;
 
-            Debug.Log("Attack Player");
+            var miss = Random.value < Game.Instance.Settings.missChance;
+
+
+            if (enemy)
+            {
+                Debug.Log("Attack player");
+                var damage = Random.Range(setting.minDamage, setting.maxDamage);
+                AttackPlayer(this.name, type, target, setting.distance, setting.missChance, damage);
+            }
+            else
+            {
+                Debug.Log("Attack enemy");
+                var damage = Random.Range(setting.minDamage, setting.maxDamage);
+                AttackEnemy("Player", type, target, setting.distance, setting.missChance, damage);
+            }
+
+
         }
 
         private void AttackSpear(Vector3 target)
         {
-            if(lastAttack + Game.Instance.Settings.spearSpeed > Time.time)
+            if (lastAttack + Game.Instance.Settings.spearSpeed > Time.time)
             {
                 return;
             }
@@ -160,17 +232,26 @@ namespace HackedDesign
 
         private void AttackRifle(Vector3 target)
         {
-            if(lastAttack + Game.Instance.Settings.spearSpeed > Time.time)
+            if (lastAttack + Game.Instance.Settings.spearSpeed > Time.time)
             {
                 return;
             }
 
             lastAttack = Time.time;
+
+            if (enemy)
+            {
+                //FIXME: var damage = Random.Range(setting.minDamage, setting.maxDamage);
+                AttackPlayer(this.name, WeaponType.Rifle, target, Game.Instance.Settings.punchDistance, 0, 20);
+            }
+
+
+            //var results = TargetsInLine(target, Game.Instance.Settings.rifleDistance);
         }
 
         private void AttackMolotov(Vector3 target)
         {
-            if(lastAttack + Game.Instance.Settings.molotovSpeed > Time.time)
+            if (lastAttack + Game.Instance.Settings.molotovSpeed > Time.time)
             {
                 return;
             }
@@ -187,64 +268,81 @@ namespace HackedDesign
             SelectNextHighestAvailableWeapon(WeaponType.Molotov);
         }
 
-        private void AttackKnife()
+        private void AttackPlayer(string name, WeaponType type, Vector3 target, float range, float missChance, int amount)
         {
-            if(lastAttack + Game.Instance.Settings.knifeSpeed > Time.time)
+            var results = TargetsInLine(target, range);
+            foreach (var hit in results)
             {
-                return;
-            }
+                if (hit.collider.CompareTag("Player"))
+                {
+                    if (Random.value > missChance)
+                    {
+                        Debug.Log("Hit player");
+                        Damageable d = Game.Instance.Player.GetComponent<Damageable>();
+                        d.Damage(name, type, amount);
+                        DamageNumbersPool.Instance.Spawn(target + Vector3.up, (target - transform.position).normalized, amount.ToString());
+                    }
+                    else
+                    {
+                        DamageNumbersPool.Instance.Spawn(target + Vector3.up, (target - transform.position).normalized, "miss");
+                    }
 
-            lastAttack = Time.time;
-
-
-            lastPunch = !lastPunch;
-
-            if (Random.value < 0.2f) // small chance to repeat
-            {
-                lastPunch = !lastPunch;
-            }
-
-
-            if (lastPunch)
-            {
-                animator.SetTrigger("Knife Swing 1");
-            }
-            else
-            {
-                animator.SetTrigger("Knife Swing 2");
+                    return; // Just in case it hit the player multiple times
+                }
             }
         }
 
-        private void AttackPunch()
+        private void AttackEnemy(string name, WeaponType type, Vector3 target, float range, float missChance, int amount)
         {
-            if(lastAttack + Game.Instance.Settings.punchSpeed > Time.time)
+            var results = TargetsInLine(target, range);
+            if(results.Length == 0)
             {
                 return;
             }
+            var first = results.FirstOrDefault(e => e.collider.CompareTag("Enemy"));
 
-            lastAttack = Time.time;
-
-            lastPunch = !lastPunch;
-
-            Debug.Log("Punch");
-
-            if (Random.value < 0.2f) // small chance to repeat
+            if(first.collider != null)
             {
-                lastPunch = !lastPunch;
+                if (Random.value > missChance)
+                    {
+                        Debug.Log("Hit enemy");
+                        Damageable d = Game.Instance.Player.GetComponent<Damageable>();
+                        d.Damage(name, type, amount);
+                        DamageNumbersPool.Instance.Spawn(target + Vector3.up, (target - transform.position).normalized, amount.ToString());
+                    }
+                    else
+                    {
+                        DamageNumbersPool.Instance.Spawn(target + Vector3.up, (target - transform.position).normalized, "miss");
+                    }
             }
-
-
-            if (lastPunch)
+            /*
+            foreach (var hit in results)
             {
-                animator.SetTrigger("Punch Left");
-            }
-            else
-            {
-                animator.SetTrigger("Punch Right");
-            }
+                if (hit.collider.CompareTag("Player"))
+                {
+                    if (Random.value > missChance)
+                    {
+                        Debug.Log("Hit player");
+                        Damageable d = Game.Instance.Player.GetComponent<Damageable>();
+                        d.Damage(name, type, amount);
+                        DamageNumbersPool.Instance.Spawn(target + Vector3.up, (target - transform.position).normalized, amount.ToString());
+                    }
+                    else
+                    {
+                        DamageNumbersPool.Instance.Spawn(target + Vector3.up, (target - transform.position).normalized, "miss");
+                    }
+
+                    return; // Just in case it hit the player multiple times
+                }
+            }*/
         }
 
-
+        private RaycastHit[] TargetsInLine(Vector3 target, float range)
+        {
+            var ray = new Ray(transform.position, target - transform.position);
+            RaycastHit[] hitInfo = Physics.SphereCastAll(ray, 1, range);
+            return hitInfo;
+        }
     }
 
     [System.Serializable]

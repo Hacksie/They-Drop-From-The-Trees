@@ -25,13 +25,28 @@ namespace HackedDesign
         public float dusk = 1275;
         public float night = 1500;
 
+        public List<WeaponSettings> weaponSettings;
+
         public float punchSpeed = 0.3f;
+        public float punchDistance = 2f;
+        public float minPunchDamage = 1f;
+        public float maxPunchDamage = 20f;
+
         public float knifeSpeed = 0.2f;
+        public float knifeDistance = 2f;
+
+
         public float spearSpeed = 0.5f;
         public float rifleSpeed = 1.0f;
         public float molotovSpeed = 1.0f;
+        
+        
+        public float rifleDistance = 20f;
+        public float clawDistance = 2f;
+        public float biteDistance = 3f;
 
         public float treeEnemyChance = 0.25f;
+        public float missChance = 0.25f;
 
         public float rainChance = 0.1f;
         public float stormChance = 0.05f;
@@ -40,5 +55,16 @@ namespace HackedDesign
 
         public bool invulnerable = false;
         
+    }
+
+    [System.Serializable]
+    public class WeaponSettings
+    {
+        public WeaponType type;
+        public float speed;
+        public float distance;
+        public float missChance;
+        public int minDamage;
+        public int maxDamage;
     }
 }

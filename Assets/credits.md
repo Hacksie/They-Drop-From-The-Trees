@@ -33,3 +33,6 @@ www.khurasanstudio.com
 # Animations - Free 32 RPG Animations
 (https://assetstore.unity.com/packages/3d/animations/free-32-rpg-animations-215058)
 (blinkstudios.dev)
+
+# Icons - Kenney.NL
+(kenney.nl)

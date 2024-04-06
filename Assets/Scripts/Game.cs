@@ -54,6 +54,7 @@ namespace HackedDesign
 
         public GameData GameData { get => gameData; set => gameData = value; }
         public Settings Settings { get => settings; set => settings = value; }
+        public Camera MainCamera { get => mainCamera; set => mainCamera = value; }
 
         Game()
         {

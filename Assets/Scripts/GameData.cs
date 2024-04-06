@@ -16,7 +16,7 @@ namespace HackedDesign
 
         public WeatherType currentWeather = WeatherType.Sunny;
         public bool chosenCharacter = false;
-        public float health = 100;
+        public int health = 100;
         public float sunburn = 0;
         public float hydration = 100;
         public int currentDay = 1;
