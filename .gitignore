@@ -9,6 +9,10 @@
 /[Bb]uilds/
 /[Ll]ogs/
 /[Mm]emoryCaptures/
+/Assets/_External/
+/Assets/Resources/_External/
+/.vs/
+/.vscode/
 
 # Never ignore Asset meta data
 !/[Aa]ssets/**/*.meta
