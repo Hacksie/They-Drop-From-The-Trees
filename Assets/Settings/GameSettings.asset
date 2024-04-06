@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688c2d157d29fff4d9668400b933a566, type: 3}
+  m_Name: GameSettings
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  maxSunburn: 100
+  maxHydration: 100
+  startingHealth: 100
+  startingSunburn: 0
+  startingHydration: 100
+  sunburnRate: 1
+  hydrationLossPerSecondNormal: 0.04
+  hydrationLossMultiplier: 2
+  secondsMultiplier: 48
+  sleepSecondsMultiplier: 4
+  startingTime: 17000
+  dawn: 18000
+  midday: 36000
+  dusk: 61200
+  night: 72000
+  punchSpeed: 0.4
+  knifeSpeed: 0.2
+  spearSpeed: 0.5
+  rifleSpeed: 1
+  molotovSpeed: 1
+  treeEnemyChance: 0.25
+  rainChance: 0.915
+  stormChance: 0.05
+  playerSpawn: {x: 100, y: 0, z: 100}
+  invulnerable: 1
