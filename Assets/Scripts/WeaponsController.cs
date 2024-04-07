@@ -26,9 +26,9 @@ namespace HackedDesign
         {
             HasWeapon.Add(WeaponType.Punch, true);
             HasWeapon.Add(WeaponType.Knife, false);
-            HasWeapon.Add(WeaponType.Spear, false);
-            HasWeapon.Add(WeaponType.Rifle, false);
-            HasWeapon.Add(WeaponType.Molotov, false);
+            HasWeapon.Add(WeaponType.Spear, true);
+            HasWeapon.Add(WeaponType.Rifle, true);
+            HasWeapon.Add(WeaponType.Molotov, true);
             HasWeapon.Add(WeaponType.Claw, true);
             HasWeapon.Add(WeaponType.Bite, true);
         }
@@ -120,19 +120,30 @@ namespace HackedDesign
 
         public void AttackBite(Vector3 target)
         {
-            AttackMelee(WeaponType.Bite, target);
+            if (AttackMelee(WeaponType.Bite, target))
+            {
+                // FIXME: Animate
+            }
         }
 
         public void AttackClaw(Vector3 target)
         {
-            AttackMelee(WeaponType.Claw, target);
+            if (AttackMelee(WeaponType.Claw, target))
+            {
+                // FIXME: Animate
+            }
         }
 
         private void AttackPunch(Vector3 target)
         {
-            AttackMelee(WeaponType.Punch, target);
+            if (AttackMelee(WeaponType.Punch, target))
+            {
+                AnimatePunch();
+            }
+        }
 
-            // Animate ->
+        private void AnimatePunch()
+        {
             lastPunch = !lastPunch;
 
             if (Random.value < 0.2f) // small chance to repeat
@@ -155,8 +166,14 @@ namespace HackedDesign
 
         private void AttackKnife(Vector3 target)
         {
-            AttackMelee(WeaponType.Knife, target);
+            if (AttackMelee(WeaponType.Knife, target))
+            {
+                AnimateKnife();
+            }
+        }
 
+        private void AnimateKnife()
+        {
             lastPunch = !lastPunch;
 
             if (Random.value < 0.2f) // small chance to repeat
@@ -175,7 +192,7 @@ namespace HackedDesign
             }
         }
 
-        private void AttackMelee(WeaponType type, Vector3 target)
+        private bool AttackMelee(WeaponType type, Vector3 target)
         {
             var setting = GetWeaponSettings(type);
             if (setting == null)
@@ -185,13 +202,10 @@ namespace HackedDesign
 
             if (lastAttack + setting.speed > Time.time)
             {
-                return;
+                return false;
             }
 
             lastAttack = Time.time;
-
-            var miss = Random.value < Game.Instance.Settings.missChance;
-
 
             if (enemy)
             {
@@ -206,33 +220,41 @@ namespace HackedDesign
                 AttackEnemy("Player", type, target, setting.distance, setting.missChance, damage);
             }
 
-
+            return true;
         }
 
         private void AttackSpear(Vector3 target)
         {
-            if (lastAttack + Game.Instance.Settings.spearSpeed > Time.time)
+            var setting = GetWeaponSettings(WeaponType.Spear);
+            if (setting == null)
+            {
+                Debug.LogError("No weapon settings for: " + WeaponType.Spear, this);
+            }
+
+            if (lastAttack + setting.speed > Time.time)
             {
                 return;
             }
 
             lastAttack = Time.time;
-
-            HasWeapon[WeaponType.Spear] = false;
+            target += Vector3.up; // Aim a little higher, to compensate for the fact that we're targeting the ground
             var weaponObject = weaponObjects.First(e => e.type == WeaponType.Spear);
 
             var rotation = Quaternion.LookRotation(target - weaponObject.spawnPoint.position, Vector3.up);
-            var go = Instantiate(spearPrefab, weaponObject.spawnPoint.position, rotation);
-            var rb = go.GetComponent<Rigidbody>();
-            rb.AddForce(target - weaponObject.spawnPoint.position, ForceMode.Impulse);
+            EntityPool.Instance.SpawnSpear( weaponObject.spawnPoint.position, (target - weaponObject.spawnPoint.position) * 2, rotation);
             animator.SetTrigger("Spear Throw");
             SelectNextHighestAvailableWeapon(WeaponType.Spear);
-
         }
 
         private void AttackRifle(Vector3 target)
         {
-            if (lastAttack + Game.Instance.Settings.spearSpeed > Time.time)
+            var setting = GetWeaponSettings(WeaponType.Rifle);
+            if (setting == null)
+            {
+                Debug.LogError("No weapon settings for: " + WeaponType.Rifle, this);
+            }
+
+            if (lastAttack + setting.speed > Time.time)
             {
                 return;
             }
@@ -241,29 +263,46 @@ namespace HackedDesign
 
             if (enemy)
             {
-                //FIXME: var damage = Random.Range(setting.minDamage, setting.maxDamage);
-                AttackPlayer(this.name, WeaponType.Rifle, target, Game.Instance.Settings.punchDistance, 0, 20);
+                var damage = Random.Range(setting.minDamage, setting.maxDamage);
+                AttackPlayer(this.name, WeaponType.Rifle, target, setting.distance, setting.missChance, damage);
             }
-
-
-            //var results = TargetsInLine(target, Game.Instance.Settings.rifleDistance);
+            else
+            {
+                Debug.Log("Attack enemy");
+                GameData.Instance.bullets--;
+                GameData.Instance.bullets = Mathf.Max(GameData.Instance.bullets, 0);
+                var damage = Random.Range(setting.minDamage, setting.maxDamage);
+                AttackEnemy("Player", WeaponType.Rifle, target, setting.distance, setting.missChance, damage);
+            }
         }
 
         private void AttackMolotov(Vector3 target)
         {
-            if (lastAttack + Game.Instance.Settings.molotovSpeed > Time.time)
+            var setting = GetWeaponSettings(WeaponType.Molotov);
+            if (setting == null)
+            {
+                Debug.LogError("No weapon settings for: " + WeaponType.Molotov, this);
+            }
+
+            if (lastAttack + setting.speed > Time.time)
             {
                 return;
             }
 
             lastAttack = Time.time;
 
-            HasWeapon[WeaponType.Molotov] = false;
-            var weaponObject = weaponObjects.First(e => e.type == WeaponType.Molotov);
+            GameData.Instance.molotovs--;
+            GameData.Instance.molotovs = Mathf.Max(GameData.Instance.bullets, 0);
 
-            var go = Instantiate(molotovPrefab, weaponObject.spawnPoint.position, Quaternion.identity);
-            var rb = go.GetComponent<Rigidbody>();
-            rb.AddForce(target - weaponObject.spawnPoint.position, ForceMode.Impulse);
+            var weaponObject = weaponObjects.First(e => e.type == WeaponType.Molotov);
+            target += Vector3.up;
+
+            var rotation = Quaternion.LookRotation(target - weaponObject.spawnPoint.position, Vector3.up);
+            EntityPool.Instance.SpawnMolotov(weaponObject.spawnPoint.position, (target - weaponObject.spawnPoint.position) + Vector3.up * 4, rotation);
+
+            //var go = Instantiate(molotovPrefab, weaponObject.spawnPoint.position, Quaternion.identity);
+            //var rb = go.GetComponent<Rigidbody>();
+            //rb.AddForce(target - weaponObject.spawnPoint.position, ForceMode.Impulse);
             animator.SetTrigger("Spear Throw");
             SelectNextHighestAvailableWeapon(WeaponType.Molotov);
         }
@@ -295,46 +334,28 @@ namespace HackedDesign
         private void AttackEnemy(string name, WeaponType type, Vector3 target, float range, float missChance, int amount)
         {
             var results = TargetsInLine(target, range);
-            if(results.Length == 0)
+            if (results.Length == 0)
             {
+                DamageNumbersPool.Instance.Spawn(target + Vector3.up, (target - transform.position).normalized, "miss");
                 return;
             }
             var first = results.FirstOrDefault(e => e.collider.CompareTag("Enemy"));
 
-            if(first.collider != null)
+            if (first.collider != null)
             {
                 if (Random.value > missChance)
-                    {
-                        Debug.Log("Hit enemy");
-                        Damageable d = Game.Instance.Player.GetComponent<Damageable>();
-                        d.Damage(name, type, amount);
-                        DamageNumbersPool.Instance.Spawn(target + Vector3.up, (target - transform.position).normalized, amount.ToString());
-                    }
-                    else
-                    {
-                        DamageNumbersPool.Instance.Spawn(target + Vector3.up, (target - transform.position).normalized, "miss");
-                    }
-            }
-            /*
-            foreach (var hit in results)
-            {
-                if (hit.collider.CompareTag("Player"))
                 {
-                    if (Random.value > missChance)
-                    {
-                        Debug.Log("Hit player");
-                        Damageable d = Game.Instance.Player.GetComponent<Damageable>();
-                        d.Damage(name, type, amount);
-                        DamageNumbersPool.Instance.Spawn(target + Vector3.up, (target - transform.position).normalized, amount.ToString());
-                    }
-                    else
-                    {
-                        DamageNumbersPool.Instance.Spawn(target + Vector3.up, (target - transform.position).normalized, "miss");
-                    }
-
-                    return; // Just in case it hit the player multiple times
+                    Debug.Log("Hit enemy");
+                    Damageable d = first.collider.GetComponent<Damageable>();
+                    d.Damage(name, type, amount);
+                    EffectsPool.Instance.SpawnBloodSplatter(target, Random.rotation);
+                    DamageNumbersPool.Instance.Spawn(target + Vector3.up, (target - transform.position).normalized, amount.ToString());
                 }
-            }*/
+                else
+                {
+                    DamageNumbersPool.Instance.Spawn(target + Vector3.up, (target - transform.position).normalized, "miss");
+                }
+            }
         }
 
         private RaycastHit[] TargetsInLine(Vector3 target, float range)

@@ -14,14 +14,12 @@ namespace HackedDesign
             Instance = this;
         }           
 
-        public WeatherType currentWeather = WeatherType.Sunny;
+        public WeatherType currentWeather = WeatherType.Overcast;
         public bool chosenCharacter = false;
-        public int health = 100;
+        public float health = 100;
         public float sunburn = 0;
         public float hydration = 100;
-        public int currentDay = 1;
-        public float currentTime = 0;
-        public DeathReason deathReason;
+         public DeathReason deathReason;
         public int shadeCount = 0;
         public bool inShade = false;
         public bool isCamping = false;
@@ -29,18 +27,21 @@ namespace HackedDesign
         public int molotovs = 0;
         public int spears = 0;
 
+        public Dictionary<string, int> killCounter = new Dictionary<string, int>();
+
         public void Reset(Settings settings)
         {
-            currentWeather = WeatherType.Sunny;
+            currentWeather = WeatherType.Overcast;
             health = settings.startingHealth;
             sunburn = settings.startingSunburn;
             hydration = settings.startingHydration;
-            currentDay = 1;
-            currentTime = settings.startingTime;
             deathReason = DeathReason.NotDead;
-            bullets = 0;
-            molotovs = 0;
-            spears = 0;
+            spears = settings.startingSpears;
+            bullets = settings.startingBullets;
+            molotovs = settings.startingMolotovs;
+            inShade = false;
+            isCamping = false;
+            killCounter = new Dictionary<string, int>() { {"Black Snake", 0} , {"Brown Snake", 0}, {"Emu", 0}, {"Kangaroo", 0}, {"Croc", 0}, {"DropBear", 0}, {"Yowie", 0}};
         }
     }
 
@@ -49,7 +50,8 @@ namespace HackedDesign
         NotDead,
         BurntToCrisp,
         DiedOfThirst,
-        BittenBySnake,
+        Bitten,
+        Clawed,
         BurntAlive,
         Killed
     }

@@ -9,9 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4985203637957616619}
+  - component: {fileID: 2306466080913549232}
   - component: {fileID: 5050428203597748864}
   - component: {fileID: 7070269275358985825}
   - component: {fileID: 4866582386382117582}
+  - component: {fileID: 3913434624835826103}
   m_Layer: 0
   m_Name: SM_Gerneric_Grass_Patch_03
   m_TagString: Untagged
@@ -34,6 +36,25 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2306466080913549232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5623216723245249033}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc6897974a7c1bb41b742c97853a6f86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyTypes:
+  - BlackSnake
+  - BrownSnake
+  hasShade: 0
+  canHasEnemy: 1
+  hasEnemy: 1
+  hasBoss: 0
 --- !u!33 &5050428203597748864
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -108,3 +129,26 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 43132061043689626, guid: ac2a32960886fef499c0fdab6d183105, type: 2}
+--- !u!136 &3913434624835826103
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5623216723245249033}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.75
+  m_Height: 0.5
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.25, z: 0}

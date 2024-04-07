@@ -415,11 +415,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   agent: {fileID: 9159354018934504087}
   detectionRadius: 10
-  attackRadius: 5
+  attackRadius: 3
   preferredTerrain: []
   health: 100
   rotateSpeed: 60
   weapons: {fileID: 3319714182840812660}
+  curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -1.5206877
+      outSlope: -1.5206877
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.04784537
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  collider: {fileID: 5471994225261986148}
 --- !u!114 &7939395920860785675
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -435,8 +460,8 @@ MonoBehaviour:
   damageEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7939395920860785675}
-        m_TargetAssemblyTypeName: HackedDesign.Damageable, Assembly-CSharp
+      - m_Target: {fileID: 5233049451993527111}
+        m_TargetAssemblyTypeName: HackedDesign.EnemyController, Assembly-CSharp
         m_MethodName: Damage
         m_Mode: 0
         m_Arguments:

@@ -18,16 +18,14 @@ MonoBehaviour:
   startingHealth: 100
   startingSunburn: 0
   startingHydration: 100
-  sunburnRate: 1
+  startingBullets: 0
+  startingSpears: 0
+  startingMolotovs: 0
+  healthRecoverRate: 1
+  weatherChangeRate: 30
   hydrationLossPerSecondNormal: 0.04
   hydrationLossMultiplier: 2
-  secondsMultiplier: 48
   sleepSecondsMultiplier: 4
-  startingTime: 17000
-  dawn: 18000
-  midday: 36000
-  dusk: 61200
-  night: 72000
   weaponSettings:
   - type: 5
     speed: 1
@@ -71,21 +69,27 @@ MonoBehaviour:
     missChance: 0.05
     minDamage: 50
     maxDamage: 100
-  punchSpeed: 0.4
-  punchDistance: 2
-  minPunchDamage: 1
-  maxPunchDamage: 20
-  knifeSpeed: 0.2
-  knifeDistance: 2
-  spearSpeed: 0.5
-  rifleSpeed: 1
-  molotovSpeed: 1
-  rifleDistance: 20
-  clawDistance: 2
-  biteDistance: 3
-  treeEnemyChance: 0.25
-  missChance: 0.25
-  rainChance: 0.915
-  stormChance: 0.05
-  playerSpawn: {x: 100, y: 0, z: 100}
+  weatherSettings:
+  - type: 3
+    sunburnRate: 0.5
+    fireSpreadChance: 0.4
+  - type: 0
+    sunburnRate: 1
+    fireSpreadChance: 0.6
+  - type: 1
+    sunburnRate: 0.1
+    fireSpreadChance: 0.2
+  - type: 2
+    sunburnRate: 0
+    fireSpreadChance: 0.1
+  treeEnemyChance: 0.5
+  maxEnemiesPerTree: 3
+  playerSpawn: {x: 128, y: 0, z: 128}
   invulnerable: 1
+  infiniteAmmo: 0
+  spearTimeout: 5
+  molotovTimeout: 2
+  molotovRadius: 3
+  fireTimeout: 2
+  fireSpreadChance: 0.5
+  smokeTimeout: 2

@@ -12,6 +12,8 @@ namespace HackedDesign
 
         private Vector3 lookAt;
 
+        public bool IsEnabled { get { return navAgent.enabled; }}
+
 
         void Awake()
         {
@@ -27,6 +29,11 @@ namespace HackedDesign
             {
                 animator = GetComponent<Animator>();
             }
+        }
+
+        public void Enable(bool enabled)
+        {
+            navAgent.enabled = enabled;
         }
 
         public void Stop()

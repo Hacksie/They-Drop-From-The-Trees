@@ -191,9 +191,34 @@ MonoBehaviour:
   detectionRadius: 15
   attackRadius: 3
   preferredTerrain: []
-  health: 100
+  health: 50
   rotateSpeed: 60
   weapons: {fileID: 2387852486161374279}
+  curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -1.5206877
+      outSlope: -1.5206877
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.04784537
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  collider: {fileID: 6074311585045160833}
 --- !u!114 &7964594594083262672
 MonoBehaviour:
   m_ObjectHideFlags: 0

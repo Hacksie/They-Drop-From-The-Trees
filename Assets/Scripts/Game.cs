@@ -70,8 +70,12 @@ namespace HackedDesign
         public void SetIntro() => State = new IntroState(introPanel);
         public void SetLoading() => State = new LoadingState(Player, Level);
         public void SetPlaying() => State = new PlayingState(Player, dayManager, enemyPool, dayPanel, charPanel, actionBarPanel);
-        private void SetDead() => State = new DeadState(Player, level);
+        public void SetDead() => State = new DeadState(Player, level);
 
+        public void NewGame()
+        {
+            
+        }
 
         public void Quit()
         {

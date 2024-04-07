@@ -2648,7 +2648,6 @@ GameObject:
   - component: {fileID: 7164937672495548615}
   - component: {fileID: 6117009756536923685}
   - component: {fileID: 5568698639316171767}
-  - component: {fileID: 7044150835203547014}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -2688,7 +2687,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acba813c11423cd4e906447f352a6044, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterController: {fileID: 7044150835203547014}
+  characterController: {fileID: 0}
   agent: {fileID: 3976805354775263962}
   weapons: {fileID: 2267915046318452270}
   camp: {fileID: 6518262806207919122}
@@ -2862,12 +2861,12 @@ NavMeshAgent:
   m_GameObject: {fileID: 7641960881500675392}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 5
-  m_Acceleration: 8
+  m_Radius: 0.4
+  m_Speed: 10
+  m_Acceleration: 100
   avoidancePriority: 50
-  m_AngularSpeed: 720
-  m_StoppingDistance: 0.5
+  m_AngularSpeed: 36000
+  m_StoppingDistance: 1
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -2925,32 +2924,6 @@ CapsuleCollider:
   m_Height: 1.8
   m_Direction: 1
   m_Center: {x: 0, y: 0.92, z: 0}
---- !u!143 &7044150835203547014
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7641960881500675392}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Height: 2
-  m_Radius: 0.5
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7741707912187646932
 GameObject:
   m_ObjectHideFlags: 0

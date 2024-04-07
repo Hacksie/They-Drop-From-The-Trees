@@ -16,7 +16,7 @@ namespace HackedDesign
         private int height;
         private Vector3 worldOffset;
         private AnimationCurve depthCurve;
-        private MeshData meshData;
+        //private MeshData meshData;
 
         public MeshData MeshData { get { return GenerateTerrainMesh(this.worldOffset); } }
         public TerrainType[,] TerrainMap { get => terrainMap; set => terrainMap = value; }
@@ -52,6 +52,11 @@ namespace HackedDesign
         public Vector2Int GetRandomLocationOfType(string name)
         {
             var list = terrainTypeMap[name];
+            // FIXME:
+            // if(list.Count == 0)
+            // {
+            //     return null;
+            // }
             return list[Random.Range(0, list.Count)];
         }
 
@@ -101,9 +106,9 @@ namespace HackedDesign
             return result;
         }
 
-        public Vector3 TerrainPositonToWorld(Vector2Int position) => new Vector3(worldOffset.x + position.x, worldOffset.y, worldOffset.z + position.y);
+        public Vector3 TerrainPositionToWorld(Vector2Int position) => new Vector3(position.x, worldOffset.y, height - position.y - 1);
 
-        public Vector2Int WorldPositionToTerrain(Vector3 worldPosition) => new Vector2Int(Mathf.RoundToInt(worldPosition.x), height - Mathf.RoundToInt(worldPosition.z) - 1);
+        public Vector2Int WorldPositionToTerrain(Vector3 worldPosition) => new Vector2Int(Mathf.RoundToInt(worldPosition.x), height - Mathf.RoundToInt(worldPosition.z) - 1); // FIXME: Do we need worldOffset here?
 
         public TerrainType SampleTerrain(Vector3 worldPosition)
         {
@@ -130,7 +135,7 @@ namespace HackedDesign
         }
 
 
-        public void Generate(int seed, float scale, int octaves, float persistance, float lacunarity, Vector2 noiseOffset, TerrainType[] regions)
+        public void Generate(float scale, int octaves, float persistance, float lacunarity, Vector2 noiseOffset, TerrainType[] regions)
         {
             float[,] noiseMap = GenerateNoiseMap(seed, this.width, this.height, scale, octaves, persistance, lacunarity, noiseOffset);
             TerrainMap = GenerateTerrainMap(noiseMap, this.width, this.height, regions, this.depthCurve, this.depth);
@@ -139,18 +144,18 @@ namespace HackedDesign
         private TerrainType[,] GenerateTerrainMap(float[,] noiseMap, int width, int height, TerrainType[] regions, AnimationCurve depthCurve, float depth)
         {
             TerrainType[,] terrainMap = new TerrainType[width, height];
-            for (int y = 0; y < height; y++)
+            for (int z = 0; z < height; z++)
             {
                 for (int x = 0; x < width; x++)
                 {
-                    var terrainSquare = GenerateTerrainMapSquare(noiseMap[x, y], regions, depthCurve, depth);
-                    terrainMap[x, y] = terrainSquare;
+                    var terrainSquare = GenerateTerrainMapSquare(noiseMap[x, z], regions, depthCurve, depth);
+                    terrainMap[x, z] = terrainSquare;
                     if(!terrainTypeMap.ContainsKey(terrainSquare.name))
                     {
                         terrainTypeMap.Add(terrainSquare.name, new List<Vector2Int>());
                     }
 
-                    terrainTypeMap[terrainSquare.name].Add(new Vector2Int(x, y));
+                    terrainTypeMap[terrainSquare.name].Add(new Vector2Int(x, z));
                 }
             }
             return terrainMap;

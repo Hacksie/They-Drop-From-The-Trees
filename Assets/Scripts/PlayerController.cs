@@ -115,7 +115,7 @@ namespace HackedDesign
                 else
                 {
                     Debug.Log("Player is dead");
-                    //Game.Instance.SetDead()
+                    Game.Instance.SetDead();
                 }
             }
         }
@@ -166,6 +166,7 @@ namespace HackedDesign
             agent.LookAt(worldPos + lookAtOffset);
             agent.UpdateBehaviour();
             weather.UpdateWeather();
+            camp.UpdateBehaviour();
         }
 
         public void FixedUpdateBehaviour()

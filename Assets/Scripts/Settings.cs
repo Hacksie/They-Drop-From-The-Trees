@@ -13,47 +13,35 @@ namespace HackedDesign
         public int startingHealth = 100;
         public int startingSunburn = 0;
         public int startingHydration = 100;
+        public int startingBullets = 0;
+        public int startingSpears = 0;
+        public int startingMolotovs = 0;
 
-        public float sunburnRate = 1f;
+        public float healthRecoverRate = 1f;
+
+        public float weatherChangeRate = 30f;
+        
         public float hydrationLossPerSecondNormal = 0.04f;
         public float hydrationLossMultiplier = 2;
-        public float secondsMultiplier = 48;
         public float sleepSecondsMultiplier = 4;
-        public float startingTime = 800;
-        public float dawn = 450;
-        public float midday = 750;
-        public float dusk = 1275;
-        public float night = 1500;
 
         public List<WeaponSettings> weaponSettings;
+        public List<WeatherSettings> weatherSettings;
 
-        public float punchSpeed = 0.3f;
-        public float punchDistance = 2f;
-        public float minPunchDamage = 1f;
-        public float maxPunchDamage = 20f;
+        public float treeEnemyChance = 0.5f;
+        public float maxEnemiesPerTree = 3;
 
-        public float knifeSpeed = 0.2f;
-        public float knifeDistance = 2f;
-
-
-        public float spearSpeed = 0.5f;
-        public float rifleSpeed = 1.0f;
-        public float molotovSpeed = 1.0f;
-        
-        
-        public float rifleDistance = 20f;
-        public float clawDistance = 2f;
-        public float biteDistance = 3f;
-
-        public float treeEnemyChance = 0.25f;
-        public float missChance = 0.25f;
-
-        public float rainChance = 0.1f;
-        public float stormChance = 0.05f;
-
-        public Vector3 playerSpawn = new Vector3(100,0,100);
+        public Vector3 playerSpawn = new Vector3(128,0,128);
 
         public bool invulnerable = false;
+        public bool infiniteAmmo = false;
+        public float spearTimeout = 5f;
+        public float molotovTimeout = 2f;
+        public float molotovRadius = 3f;
+
+        public float fireTimeout = 2f;
+        public float fireSpreadChance = 0.5f;
+        public float smokeTimeout = 2f;
         
     }
 
@@ -66,5 +54,13 @@ namespace HackedDesign
         public float missChance;
         public int minDamage;
         public int maxDamage;
+    }
+
+    [System.Serializable]
+    public class WeatherSettings
+    {
+        public WeatherType type;
+        public float sunburnRate;
+        public float fireSpreadChance;
     }
 }

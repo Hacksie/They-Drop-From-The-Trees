@@ -9,10 +9,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1524885223368111202}
+  - component: {fileID: 4581213418501340867}
   - component: {fileID: 6033852355603801258}
   - component: {fileID: 8414126826082364186}
   - component: {fileID: 348976911686986466}
   - component: {fileID: 1232004970603612575}
+  - component: {fileID: 6734406948753472077}
+  - component: {fileID: 4956735756997061859}
   m_Layer: 0
   m_Name: SM_Generic_TreeStump_01
   m_TagString: Untagged
@@ -35,6 +38,25 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4581213418501340867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5202424339693927534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc6897974a7c1bb41b742c97853a6f86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyTypes:
+  - BlackSnake
+  - BrownSnake
+  hasShade: 0
+  canHasEnemy: 1
+  hasEnemy: 1
+  hasBoss: 0
 --- !u!33 &6033852355603801258
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -124,11 +146,48 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.4105202
-  m_Height: 0.497575
+  m_Radius: 0.4
+  m_Height: 0.5
   m_Direction: 1
-  m_Center: {x: -0.0000026524067, y: 0.2487875, z: -0.00000016391277}
+  m_Center: {x: 0, y: 0.2487875, z: 0}
+--- !u!65 &6734406948753472077
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5202424339693927534}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Size: {x: 0.5, y: 0.497575, z: 0.5}
+  m_Center: {x: 0, y: 0.2487875, z: 0}
+--- !u!208 &4956735756997061859
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5202424339693927534}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.38900003, y: 0.24900001, z: 0.411}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0.24900001, z: 0}
+  m_TimeToStationary: 0.5

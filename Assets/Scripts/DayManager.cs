@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Linq;
 using UnityEngine;
 
 namespace HackedDesign
@@ -10,69 +12,67 @@ namespace HackedDesign
         [SerializeField] private Light duskLight;
         [SerializeField] private Light nightLight;
         [SerializeField] private Light stormLight;
+        [SerializeField] private Light rainLight;
+        [SerializeField] private Light overcastLight;
 
         public static DayManager Instance { get; private set; }
 
-        private DayPhase currentDayPhase = DayPhase.Day;
+        //private DayPhase currentDayPhase = DayPhase.Day;
+
+        private float currentWeatherTime = 0;
 
         DayManager()
         {
             Instance = this;
-        }         
+        }
+
 
         public void UpdateBehaviour()
         {
-            var newDayPhase = GetDayPhase(GameData.Instance.currentTime, Game.Instance.Settings);
-            if(newDayPhase != this.currentDayPhase)
+            currentWeatherTime += Time.deltaTime;
+            if (currentWeatherTime > Game.Instance.Settings.weatherChangeRate)
             {
-                Debug.Log("Switch weather");
-                // Calc weather
-                var r = Random.value;
-                if(r < Game.Instance.Settings.stormChance)
+                Debug.Log("Update weather");
+                currentWeatherTime = 0;
+                var nextWeather = Random.Range(0, 4);
+                GameData.Instance.currentWeather = (WeatherType)nextWeather;
+                
+                if (GameData.Instance.currentWeather == WeatherType.Storm)
                 {
-                    GameData.Instance.currentWeather = WeatherType.Storm;
-                }
-                else if (r < Game.Instance.Settings.rainChance)
-                {
-                    GameData.Instance.currentWeather = WeatherType.Rain;
-                }
-                else
-                {
-                    GameData.Instance.currentWeather = WeatherType.Sunny;
+                    StartCoroutine(UpdateLightning());
                 }
             }
-            this.currentDayPhase = newDayPhase;
 
-            UpdateTime();
-            CheckNextDay();
-            UpdateSunburn(this.currentDayPhase);
+
+            UpdateSunburn();
             UpdateHydration();
             UpdateLight();
+            UpdateLightning();
         }
 
-        private void UpdateTime()
+        private IEnumerator UpdateLightning()
         {
-            GameData.Instance.currentTime += Time.deltaTime * Game.Instance.Settings.secondsMultiplier * (GameData.Instance.isCamping? Game.Instance.Settings.sleepSecondsMultiplier : 1);
+
+            while(GameData.Instance.currentWeather == WeatherType.Storm)
+            {                
+                var location = Game.Instance.Level.Terrain.GetRandomLocation();
+                var position = Game.Instance.Level.Terrain.TerrainPositionToWorld(location);
+                EffectsPool.Instance.SpawnLightning(position);
+                yield return new WaitForSeconds(1);
+            }
         }
 
-        private void CheckNextDay()
+        private void UpdateSunburn()
         {
-            if (GameData.Instance.currentTime > secondsPerDay)
-            {
-                var leftOver = GameData.Instance.currentTime * Game.Instance.Settings.secondsMultiplier - secondsPerDay;
-                GameData.Instance.currentTime = leftOver;
-                GameData.Instance.currentDay++;
-            }
-        }        
+            var weatherSettings = Game.Instance.Settings.weatherSettings.FirstOrDefault(w => w.type == GameData.Instance.currentWeather);
 
-
-        private void UpdateSunburn(DayPhase dayPhase)
-        {
-            if (currentDayPhase == DayPhase.Day && !GameData.Instance.inShade)
+            if (weatherSettings == null)
             {
-                GameData.Instance.sunburn += Time.deltaTime * Game.Instance.Settings.sunburnRate;
-                GameData.Instance.sunburn = Mathf.Clamp(GameData.Instance.sunburn, 0, Game.Instance.Settings.maxSunburn);
+                Debug.LogError("No weather settings set for " + GameData.Instance.currentWeather.ToString(), this);
             }
+
+            GameData.Instance.sunburn += Time.deltaTime * weatherSettings.sunburnRate;
+            GameData.Instance.sunburn = Mathf.Clamp(GameData.Instance.sunburn, 0, Game.Instance.Settings.maxSunburn);
 
             if (GameData.Instance.sunburn >= Game.Instance.Settings.maxSunburn)
             {
@@ -89,57 +89,33 @@ namespace HackedDesign
             {
                 Game.Instance.Die(DeathReason.DiedOfThirst);
             }
-        }        
+        }
 
 
         private void UpdateLight()
         {
-            var phase = GetDayPhase(GameData.Instance.currentTime, Game.Instance.Settings);
+            var currentWeather = GameData.Instance.currentWeather;
+            overcastLight.gameObject.SetActive(currentWeather == WeatherType.Overcast);
+            dayLight.gameObject.SetActive(currentWeather == WeatherType.Sunny);
+            rainLight.gameObject.SetActive(currentWeather == WeatherType.Rain);
+            stormLight.gameObject.SetActive(currentWeather == WeatherType.Storm);
 
-            dawnLight.gameObject.SetActive(phase == DayPhase.Dawn && GameData.Instance.currentWeather == WeatherType.Sunny);
-            dayLight.gameObject.SetActive(phase == DayPhase.Day  && GameData.Instance.currentWeather == WeatherType.Sunny);
-            duskLight.gameObject.SetActive(phase == DayPhase.Dusk && GameData.Instance.currentWeather == WeatherType.Sunny);
-            stormLight.gameObject.SetActive(GameData.Instance.currentWeather != WeatherType.Sunny && phase != DayPhase.Night);
-            nightLight.gameObject.SetActive(phase == DayPhase.Night);
-            
-        }
-
-        public static DayPhase GetDayPhase(float time, Settings settings)
-        {
-            if(time < settings.dawn)
-            {
-                return DayPhase.Night;
-            }
-            else if (time < settings.midday)
-            {
-                return DayPhase.Dawn;
-            }
-            else if (time < settings.dusk)
-            {
-                return DayPhase.Day;
-            }
-            else if (time < settings.night)
-            {
-                return DayPhase.Dusk;
-            }
-            else
-            {
-                return DayPhase.Night;
-            }
         }
     }
 
-    public enum DayPhase {
+    public enum DayPhase
+    {
         Dawn,
         Day,
         Dusk,
         Night
     }
 
-    public enum WeatherType 
+    public enum WeatherType
     {
         Sunny,
         Rain,
-        Storm
+        Storm,
+        Overcast
     }
 }

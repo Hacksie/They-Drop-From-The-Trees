@@ -8,32 +8,29 @@ namespace HackedDesign.UI
 {
     public class DayPresenter : AbstractPresenter
     {
-        [SerializeField] private UnityEngine.UI.Image dawnIcon;
+        [SerializeField] private UnityEngine.UI.Image overcastIcon;
         [SerializeField] private UnityEngine.UI.Image dayIcon;
-        [SerializeField] private UnityEngine.UI.Image duskIcon;
-        [SerializeField] private UnityEngine.UI.Image nightIcon;
+        [SerializeField] private UnityEngine.UI.Image rainIcon;
+        [SerializeField] private UnityEngine.UI.Image stormIcon;        
         [SerializeField] private TMP_Text weatherLabel;
-        [SerializeField] private TMP_Text dayLabel;
-        [SerializeField] private TMP_Text timeLabel;
 
         public override void Repaint()
         {
             weatherLabel.text = GameData.Instance.currentWeather.ToString();
-            TimeSpan time = TimeSpan.FromSeconds(GameData.Instance.currentTime);
-            dayLabel.text = "Day " + GameData.Instance.currentDay.ToString();
-            timeLabel.text = time.ToString("hh':'mm", System.Globalization.CultureInfo.InvariantCulture);            
-            UpdateDayPhaseIcon();
+            UpdateWeatherIcon();
+
+            
         }
 
-        private void UpdateDayPhaseIcon()
+        private void UpdateWeatherIcon()
         {
-            var phase = DayManager.GetDayPhase(GameData.Instance.currentTime, Game.Instance.Settings);
-            dawnIcon.gameObject.SetActive(phase == DayPhase.Dawn);
-            dayIcon.gameObject.SetActive(phase == DayPhase.Day);
-            duskIcon.gameObject.SetActive(phase == DayPhase.Dusk);
-            nightIcon.gameObject.SetActive(phase == DayPhase.Night);
+            var currentWeather = GameData.Instance.currentWeather;
+            overcastIcon.gameObject.SetActive(currentWeather == WeatherType.Overcast);
+            dayIcon.gameObject.SetActive(currentWeather == WeatherType.Sunny);
+            rainIcon.gameObject.SetActive(currentWeather == WeatherType.Rain);
+            stormIcon.gameObject.SetActive(currentWeather == WeatherType.Storm);
 
         }
-    
+   
     }
 }
