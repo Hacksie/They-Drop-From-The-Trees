@@ -23,7 +23,7 @@ MonoBehaviour:
   startingMolotovs: 0
   healthRecoverRate: 1
   weatherChangeRate: 30
-  hydrationLossPerSecondNormal: 0.04
+  hydrationLossPerSecondNormal: 0.1
   hydrationLossMultiplier: 2
   sleepSecondsMultiplier: 4
   weaponSettings:
@@ -55,20 +55,26 @@ MonoBehaviour:
     speed: 1
     distance: 10
     missChance: 0
-    minDamage: 20
-    maxDamage: 30
+    minDamage: 50
+    maxDamage: 100
   - type: 3
     speed: 1
     distance: 10
     missChance: 0.05
-    minDamage: 50
-    maxDamage: 100
+    minDamage: 20
+    maxDamage: 50
   - type: 4
     speed: 1
     distance: 10
     missChance: 0.05
     minDamage: 50
     maxDamage: 100
+  - type: 7
+    speed: 1
+    distance: 1
+    missChance: 0.1
+    minDamage: 10
+    maxDamage: 20
   weatherSettings:
   - type: 3
     sunburnRate: 0.5
@@ -85,7 +91,7 @@ MonoBehaviour:
   treeEnemyChance: 0.5
   maxEnemiesPerTree: 3
   playerSpawn: {x: 128, y: 0, z: 128}
-  invulnerable: 1
+  invulnerable: 0
   infiniteAmmo: 0
   spearTimeout: 5
   molotovTimeout: 2
@@ -93,3 +99,6 @@ MonoBehaviour:
   fireTimeout: 2
   fireSpreadChance: 0.5
   smokeTimeout: 2
+  maxFireSpawns: 20
+  treeRespawnMinTimeout: 10
+  treeRespawnMaxTimeout: 30

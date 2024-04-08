@@ -23,6 +23,8 @@ namespace HackedDesign
         [SerializeField] private UI.DayPresenter dayPanel = null;
         [SerializeField] private UI.CharPresenter charPanel = null;
         [SerializeField] private UI.ActionBarPresenter actionBarPanel = null;
+        [SerializeField] private UI.KillCounterPresenter killCounterPanel = null;
+        [SerializeField] private UI.DeadPresenter deadPanel = null;
 
 
         private IState state = new EmptyState();
@@ -69,8 +71,8 @@ namespace HackedDesign
         public void SetMainMenu() => State = new MainMenuState(mainCamera, menuCamera, mainMenuPanel);
         public void SetIntro() => State = new IntroState(introPanel);
         public void SetLoading() => State = new LoadingState(Player, Level);
-        public void SetPlaying() => State = new PlayingState(Player, dayManager, enemyPool, dayPanel, charPanel, actionBarPanel);
-        public void SetDead() => State = new DeadState(Player, level);
+        public void SetPlaying() => State = new PlayingState(Player, dayManager, enemyPool, dayPanel, charPanel, actionBarPanel, killCounterPanel);
+        public void SetDead() => State = new DeadState(Player, level, deadPanel);
 
         public void NewGame()
         {

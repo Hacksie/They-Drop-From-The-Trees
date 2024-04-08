@@ -18,6 +18,7 @@ namespace HackedDesign
         [SerializeField] private List<GameObject> maleCharacter;
         [SerializeField] private List<GameObject> femaleCharacter;
         [SerializeField] private MapManager mapManager;
+        [SerializeField] private CameraShake shake;
 
         [Header("Settings")]
         [SerializeField] private LayerMask aimMask;
@@ -70,8 +71,13 @@ namespace HackedDesign
 
         void Start()
         {
+            Reset();
+        }
+
+        public void Reset()
+        {
             SetCharacter();
-            camp.UpdateCamp();
+            //camp.UpdateCamp();
             weather.UpdateWeather();
             gameObject.SetActive(false);
         }
@@ -105,9 +111,14 @@ namespace HackedDesign
         {
             Debug.Log("player took :" +type.ToString() + " damage: " + amount + " from: " + attacker);
             GameData.Instance.health -= amount;
+            shake.Shake(0.5f,0.2f);
+
+
             if(GameData.Instance.health < 0)
             {
                 GameData.Instance.health = 0;
+                // FIXME: Set death reason
+                agent.Die();
                 if(Game.Instance.Settings.invulnerable)
                 {
                     Debug.Log("Player would have died but is invulnerable");
@@ -120,14 +131,14 @@ namespace HackedDesign
             }
         }
 
-        public void ToggleCamp()
-        {
-            if (GameData.Instance.inShade)
-            {
-                GameData.Instance.isCamping = !GameData.Instance.isCamping;
-                camp.UpdateCamp();
-            }
-        }
+        // public void ToggleCamp()
+        // {
+        //     if (GameData.Instance.inShade)
+        //     {
+        //         GameData.Instance.isCamping = !GameData.Instance.isCamping;
+        //         //camp.UpdateCamp();
+        //     }
+        // }
 
         public void SwitchCharacter(bool character)
         {
@@ -163,7 +174,7 @@ namespace HackedDesign
                 weapons.Attack(worldPos);
             }
 
-            agent.LookAt(worldPos + lookAtOffset);
+            agent.LookAt = worldPos + lookAtOffset;
             agent.UpdateBehaviour();
             weather.UpdateWeather();
             camp.UpdateBehaviour();

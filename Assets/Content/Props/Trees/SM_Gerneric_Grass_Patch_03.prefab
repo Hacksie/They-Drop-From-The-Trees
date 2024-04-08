@@ -49,10 +49,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyTypes:
-  - BlackSnake
-  - BrownSnake
+  - Black Snake
+  - Brown Snake
   hasShade: 0
-  canHasEnemy: 1
   hasEnemy: 1
   hasBoss: 0
 --- !u!33 &5050428203597748864

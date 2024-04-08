@@ -20,6 +20,7 @@ namespace HackedDesign
         public void SpawnRandom(Vector3 position, Vector3 direction)
         {
             var go = Instantiate(enemyPrefabs[Random.Range(0, enemyPrefabs.Count)], position, Quaternion.identity, this.transform);
+            go.name = go.name.Replace("(Clone)", "");
             go.Spawn();
             var rb = go.GetComponent<Rigidbody>();
             if(rb != null)
@@ -38,6 +39,7 @@ namespace HackedDesign
                 return;
             }
             var go = Instantiate(prefabList[Random.Range(0, prefabList.Length)], position, Quaternion.identity, this.transform);
+            go.name = go.name.Replace("(Clone)", "");
             go.Spawn();
             var rb = go.GetComponent<Rigidbody>();
             if(rb != null)
@@ -50,6 +52,7 @@ namespace HackedDesign
         public void SpawnBoss(Vector3 position, Vector3 direction)
         {
             var go = Instantiate(bossPrefab, position, Quaternion.identity, this.transform);
+            go.name = go.name.Replace("(Clone)", "");
             go.Spawn();
             var rb = go.GetComponent<Rigidbody>();
             if(rb != null)

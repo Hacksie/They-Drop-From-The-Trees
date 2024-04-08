@@ -20,7 +20,7 @@ namespace HackedDesign
         [SerializeField] private Molotov molotovPrefab;
         [SerializeField] private GameObject spearPrefab;
         [Header("Pickups")]
-        [SerializeField] private Transform pickupPrefab;
+        [SerializeField] private List<Pickup> pickupPrefabs;
 
 
         private List<GameObject> props = new List<GameObject>();
@@ -46,12 +46,12 @@ namespace HackedDesign
         }
 
         // FIXME: Make this private
-        public void Add(GameObject gameObject)
+        private void Add(GameObject gameObject)
         {
             props.Add(gameObject);
         }
 
-        public void Remove(GameObject gameObject)
+        private void Remove(GameObject gameObject)
         {
             props.Remove(gameObject);
         }
@@ -95,6 +95,13 @@ namespace HackedDesign
             var rb = go.GetComponent<Rigidbody>();
             rb.velocity = Vector3.zero;
             rb.AddForce(force, ForceMode.Impulse);
+        }
+
+        public void SpawnRandomPickup(Vector3 position)
+        {
+            var rotation = Quaternion.Euler(0, Random.Range(0, 359), 0);
+            var go = Instantiate(pickupPrefabs[Random.Range(0, pickupPrefabs.Count)], position, rotation, propParent);
+            Add(go.gameObject);            
         }
 
         public void SpawnRandomProp(Vector3 position)

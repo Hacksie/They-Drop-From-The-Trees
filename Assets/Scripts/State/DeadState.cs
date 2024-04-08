@@ -8,11 +8,13 @@ namespace HackedDesign
     {
         private PlayerController player;
         private MapManager level;
+        private UI.AbstractPresenter deadPanel;
 
-        public DeadState(PlayerController player, MapManager level)
+        public DeadState(PlayerController player, MapManager level, UI.AbstractPresenter deadPanel)
         {
             this.player = player;
             this.level = level;
+            this.deadPanel = deadPanel;
             //this.level.gameObject.SetActive(true);
         }
 
@@ -20,12 +22,14 @@ namespace HackedDesign
 
         public void Begin()
         {
-            UnityEngine.Debug.Log("Dead");
+            //UnityEngine.Debug.Log("Dead");
+            this.deadPanel.Show();
+            this.deadPanel.Repaint();
         }
 
         public void End()
         {
-
+            this.deadPanel.Hide();
         }
 
         public void FixedUpdate()

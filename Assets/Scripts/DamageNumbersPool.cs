@@ -28,7 +28,7 @@ namespace HackedDesign
             pool.Clear();
         }
 
-        public void Spawn(Vector3 position, Vector3 direction, string text)
+        public void Spawn(Vector3 position, Vector3 direction, string text, bool isPlayer)
         {
             var rotation = Quaternion.LookRotation(position - Game.Instance.MainCamera.transform.position);
             var tmp = pool.FirstOrDefault(t => t.gameObject.activeInHierarchy == false);
@@ -43,7 +43,7 @@ namespace HackedDesign
                 tmp.transform.rotation = rotation;
             }
 
-            tmp.Spawn(text, position, direction);
+            tmp.Spawn(text, position, direction, isPlayer);
         }
     }
 }

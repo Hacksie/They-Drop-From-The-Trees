@@ -12,7 +12,10 @@ namespace HackedDesign
         public GameData()
         {
             Instance = this;
-        }           
+        }       
+
+        public Dictionary<WeaponType, bool> hasWeapon = new Dictionary<WeaponType, bool>();    
+
 
         public WeatherType currentWeather = WeatherType.Overcast;
         public bool chosenCharacter = false;
@@ -31,6 +34,13 @@ namespace HackedDesign
 
         public void Reset(Settings settings)
         {
+            hasWeapon.Clear();
+            hasWeapon.Add(WeaponType.Punch, true);
+            hasWeapon.Add(WeaponType.Knife, false);
+            hasWeapon.Add(WeaponType.Spear, false);
+            hasWeapon.Add(WeaponType.Rifle, false);
+            hasWeapon.Add(WeaponType.Molotov, false);
+         
             currentWeather = WeatherType.Overcast;
             health = settings.startingHealth;
             sunburn = settings.startingSunburn;
@@ -53,6 +63,7 @@ namespace HackedDesign
         Bitten,
         Clawed,
         BurntAlive,
-        Killed
+        Killed,
+        Lightning
     }
 }

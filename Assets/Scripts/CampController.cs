@@ -10,11 +10,11 @@ namespace HackedDesign
         [SerializeField] private GameObject campModel;
         [SerializeField] private GameObject playerModelParent;
 
-        public void UpdateCamp()
-        {
-            campModel.SetActive(GameData.Instance.isCamping);
-            playerModelParent.SetActive(!GameData.Instance.isCamping);
-        }
+        // public void UpdateCamp()
+        // {
+        //     campModel.SetActive(GameData.Instance.isCamping);
+        //     playerModelParent.SetActive(!GameData.Instance.isCamping);
+        // }
 
         public void UpdateBehaviour()
         {

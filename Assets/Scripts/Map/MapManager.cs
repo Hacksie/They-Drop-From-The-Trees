@@ -16,7 +16,7 @@ namespace HackedDesign
         [SerializeField] private Vector2Int size = new Vector2Int(256, 256);
         [SerializeField] private int depth = 20;
         [SerializeField] private float scale = 20f;
-        [SerializeField] private Vector3 offset;        
+        [SerializeField] private Vector3 offset;
         [SerializeField] private int seed = -1;
         [SerializeField] private Vector2 noiseOffset = Vector2.zero;
         [Range(1, 10)]
@@ -35,7 +35,8 @@ namespace HackedDesign
         [SerializeField] private int treeCount = 500;
         [SerializeField] private int waterHoleTreeCount = 20;
         [SerializeField] private int propCount;
-        
+        [SerializeField] private int pickupCount = 20;
+
         private Terrain terrain;
 
         public Terrain Terrain { get => terrain; set => terrain = value; }
@@ -62,6 +63,7 @@ namespace HackedDesign
             SpawnTrees();
             SpawnWaterHoles();
             SpawnBoss();
+            SpawnPickups();
             SpawnProps();
         }
 
@@ -110,6 +112,17 @@ namespace HackedDesign
         //     return position;
         // }
 
+        private void SpawnPickups()
+        {
+            for (int i = 0; i < pickupCount; i++)
+            {
+                var location = terrain.GetRandomLocation();
+                var position = terrain.TerrainPositionToWorld(location);
+                position.y = terrain.TerrainMap[location.x, location.y].meshHeight;
+                position += new Vector3(0.5f, 0, 0.5f);
+                EntityPool.Instance.SpawnRandomPickup(position);
+            }
+        }
 
         private void SpawnProps()
         {

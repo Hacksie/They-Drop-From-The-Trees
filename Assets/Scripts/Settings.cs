@@ -42,6 +42,12 @@ namespace HackedDesign
         public float fireTimeout = 2f;
         public float fireSpreadChance = 0.5f;
         public float smokeTimeout = 2f;
+        public int maxFireSpawns = 20;
+
+        public float treeRespawnMinTimeout = 10f;
+        public float treeRespawnMaxTimeout = 30f;
+
+        //public float waterCrocChance = 0.25f;
         
     }
 

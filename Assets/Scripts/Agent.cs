@@ -14,6 +14,7 @@ namespace HackedDesign
 
         public bool IsEnabled { get { return navAgent.enabled; }}
 
+        public Vector3 LookAt { get => lookAt; set => lookAt = value; }
 
         void Awake()
         {
@@ -41,6 +42,11 @@ namespace HackedDesign
             navAgent.isStopped = true;
         }
 
+        public void Reset()
+        {
+            animator.SetBool("Dead", false);
+        }
+
         public void MoveTo(Vector3 position)
         {
             navAgent.SetDestination(position);
@@ -55,10 +61,15 @@ namespace HackedDesign
             navAgent.enabled = true;
         }
 
-        public void LookAt(Vector3 position)
+        public void Die()
         {
-            this.lookAt = position;
+            animator.SetTrigger("Dead");
         }
+
+        // public void LookAt(Vector3 position)
+        // {
+        //     this.lookAt = position;
+        // }
 
         public void UpdateBehaviour()
         {
@@ -71,23 +82,5 @@ namespace HackedDesign
             animator.SetFloat("Speed", navAgent.velocity.magnitude);
 
         }
-
-        private void OnAnimatorIK(int layerIndex)
-        {
-            animator.SetLookAtPosition(lookAt);
-            animator.SetLookAtWeight(1, 0.4f, 0.7f);
-        }
-
-    }
-
-    public enum WeaponType
-    {
-        Punch,
-        Knife,
-        Spear,
-        Rifle,
-        Molotov,
-        Bite,
-        Claw
     }
 }
