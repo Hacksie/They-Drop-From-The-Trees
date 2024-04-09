@@ -38,7 +38,9 @@ namespace HackedDesign
                 break;
             }
 
+            Game.Instance.Player.Pickup();
             gameObject.SetActive(false);
+            AudioManager.Instance.PickupSFX();
         }
 
         private void KnifePickup()
@@ -73,8 +75,8 @@ namespace HackedDesign
         {
             GameData.Instance.health = Game.Instance.Settings.maxHealth;
             GameData.Instance.sunburn = 0;
+            DamageNumbersPool.Instance.Spawn(Game.Instance.Player.transform.position, Vector3.up, "Full Health!", true);
         }
-
     }
 
 

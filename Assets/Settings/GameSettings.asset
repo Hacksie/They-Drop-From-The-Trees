@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 688c2d157d29fff4d9668400b933a566, type: 3}
   m_Name: GameSettings
   m_EditorClassIdentifier: 
+  playerRunSpeed: 10
   maxHealth: 100
   maxSunburn: 100
   maxHydration: 100
@@ -22,6 +23,7 @@ MonoBehaviour:
   startingSpears: 0
   startingMolotovs: 0
   healthRecoverRate: 1
+  startingWeather: 3
   weatherChangeRate: 30
   hydrationLossPerSecondNormal: 0.1
   hydrationLossMultiplier: 2
@@ -41,31 +43,31 @@ MonoBehaviour:
     maxDamage: 5
   - type: 0
     speed: 0.4
-    distance: 2
+    distance: 3
     missChance: 0.2
     minDamage: 1
     maxDamage: 20
   - type: 1
     speed: 0.3
-    distance: 2
+    distance: 4
     missChance: 0.2
     minDamage: 5
     maxDamage: 30
   - type: 2
     speed: 1
-    distance: 10
+    distance: 20
     missChance: 0
     minDamage: 50
     maxDamage: 100
   - type: 3
     speed: 1
-    distance: 10
+    distance: 20
     missChance: 0.05
     minDamage: 20
     maxDamage: 50
   - type: 4
     speed: 1
-    distance: 10
+    distance: 20
     missChance: 0.05
     minDamage: 50
     maxDamage: 100
@@ -74,7 +76,7 @@ MonoBehaviour:
     distance: 1
     missChance: 0.1
     minDamage: 10
-    maxDamage: 20
+    maxDamage: 30
   weatherSettings:
   - type: 3
     sunburnRate: 0.5
@@ -88,7 +90,6 @@ MonoBehaviour:
   - type: 2
     sunburnRate: 0
     fireSpreadChance: 0.1
-  treeEnemyChance: 0.5
   maxEnemiesPerTree: 3
   playerSpawn: {x: 128, y: 0, z: 128}
   invulnerable: 0

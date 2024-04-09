@@ -34,18 +34,32 @@ namespace HackedDesign
             Instance = this;
         }
 
-        public void Clear()
+        public void Reset()
         {
-            foreach (var go in props)
+           foreach (var go in props)
             {
                 go.SetActive(false);
                 Destroy(go);
             }
 
+            foreach(var mol in molotovs)
+            {
+                mol.gameObject.SetActive(false);
+                Destroy(mol.gameObject);
+            }
+
+            foreach(var spear in spears)
+            {
+                spear.gameObject.SetActive(false);
+                Destroy(spear.gameObject);
+            }
+
+            molotovs.Clear();
             props.Clear();
         }
 
-        // FIXME: Make this private
+
+
         private void Add(GameObject gameObject)
         {
             props.Add(gameObject);

@@ -21,9 +21,7 @@ namespace HackedDesign
                 if(hit.collider.CompareTag("Player"))
                 {
                     // Arbitrary insta death
-                    GameData.Instance.health = 0;
-                    GameData.Instance.deathReason = DeathReason.Lightning;
-                    Game.Instance.SetDead();
+                    Game.Instance.Player.Damage("Lightning", WeaponType.Fire, 200);
                 }
 
                 EffectsPool.Instance.SpawnFire(hit.point);

@@ -25,13 +25,15 @@ namespace HackedDesign
             this.level.Build();
             
             Physics.SyncTransforms();
+            this.player.Reset();
             player.gameObject.SetActive(true);            
             var spawnPosition = Game.Instance.Settings.playerSpawn;
             var meshHeight = this.level.Terrain.SampleTerrainMeshHeight(spawnPosition);
             spawnPosition.y = meshHeight;
+            
             this.player.Spawn(spawnPosition);
 
-            Game.Instance.SetIntro();        
+            Game.Instance.SetIntro();
         }
 
         public void End()

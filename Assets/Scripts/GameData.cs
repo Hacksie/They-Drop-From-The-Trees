@@ -22,6 +22,7 @@ namespace HackedDesign
         public float health = 100;
         public float sunburn = 0;
         public float hydration = 100;
+        public string deathWho;
          public DeathReason deathReason;
         public int shadeCount = 0;
         public bool inShade = false;
@@ -41,10 +42,11 @@ namespace HackedDesign
             hasWeapon.Add(WeaponType.Rifle, false);
             hasWeapon.Add(WeaponType.Molotov, false);
          
-            currentWeather = WeatherType.Overcast;
+            currentWeather = settings.startingWeather;
             health = settings.startingHealth;
             sunburn = settings.startingSunburn;
             hydration = settings.startingHydration;
+            deathWho = "";
             deathReason = DeathReason.NotDead;
             spears = settings.startingSpears;
             bullets = settings.startingBullets;
@@ -62,6 +64,7 @@ namespace HackedDesign
         DiedOfThirst,
         Bitten,
         Clawed,
+        Punched,
         BurntAlive,
         Killed,
         Lightning

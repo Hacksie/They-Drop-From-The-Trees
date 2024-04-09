@@ -52,8 +52,8 @@ namespace HackedDesign
             this.charPanel.Repaint();
             this.actionBarPanel.Repaint();
             this.killPanel.Repaint();
-            
-        }    
+
+        }
 
         private void Rehydrate()
         {
@@ -61,11 +61,11 @@ namespace HackedDesign
 
             var currentTile = Game.Instance.Level.Terrain.TerrainMap[location.x, location.y];
 
-            if(currentTile.name == "Water")
+            if (currentTile.name == "Water")
             {
-                GameData.Instance.hydration += Game.Instance.Settings.hydrationLossPerSecondNormal * Game.Instance.Settings.hydrationLossMultiplier * Time.deltaTime;
+                GameData.Instance.hydration += Game.Instance.Settings.hydrationLossMultiplier * Time.deltaTime;
             }
-        }    
+        }
 
         public void FixedUpdate()
         {
@@ -74,7 +74,7 @@ namespace HackedDesign
 
         public void Menu()
         {
-
+            Game.Instance.SetPause();
         }
 
         public void Select()

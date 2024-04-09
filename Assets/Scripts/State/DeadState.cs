@@ -9,12 +9,18 @@ namespace HackedDesign
         private PlayerController player;
         private MapManager level;
         private UI.AbstractPresenter deadPanel;
+        private EffectsPool effectsPool;
+        private EntityPool entityPool;
+        private EnemyPool enemyPool;
 
-        public DeadState(PlayerController player, MapManager level, UI.AbstractPresenter deadPanel)
+        public DeadState(PlayerController player, MapManager level, UI.AbstractPresenter deadPanel, EnemyPool enemyPool, EntityPool entityPool, EffectsPool effectsPool)
         {
             this.player = player;
             this.level = level;
             this.deadPanel = deadPanel;
+            this.effectsPool = effectsPool;
+            this.entityPool = entityPool;
+            this.enemyPool = enemyPool;
             //this.level.gameObject.SetActive(true);
         }
 
@@ -30,6 +36,12 @@ namespace HackedDesign
         public void End()
         {
             this.deadPanel.Hide();
+            this.player.Reset();
+            this.enemyPool.Reset();
+            this.effectsPool.Reset();
+            this.entityPool.Reset();
+            this.level.Reset();
+            
         }
 
         public void FixedUpdate()

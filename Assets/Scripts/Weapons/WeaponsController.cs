@@ -113,7 +113,7 @@ namespace HackedDesign
         private void SelectNextHighestAvailableWeapon()
         {
             SwitchWeapon(GameData.Instance.hasWeapon.Last(w => w.Value).Key);
-            
+
         }
 
         public WeaponSettings GetWeaponSettings(WeaponType weapon) => Game.Instance.Settings.weaponSettings.FirstOrDefault(w => w.type == weapon);
@@ -140,7 +140,13 @@ namespace HackedDesign
             if (AttackMelee(WeaponType.Punch, target))
             {
                 AnimatePunch();
+                if (!enemy)
+                {
+                    AudioManager.Instance.PlayPunchSFX();
+                }
             }
+
+
         }
 
         private void AnimatePunch()
@@ -170,6 +176,10 @@ namespace HackedDesign
             if (AttackMelee(WeaponType.Knife, target))
             {
                 AnimateKnife();
+                if (!enemy)
+                {
+                    AudioManager.Instance.PlayKnifeSFX();
+                }
             }
         }
 
@@ -254,6 +264,10 @@ namespace HackedDesign
                 animator.SetTrigger("Spear Throw");
             }
             SelectNextHighestAvailableWeapon();
+            if (!enemy)
+            {
+                AudioManager.Instance.PlaySpearSFX();
+            }
         }
 
         private void AttackRifle(Vector3 target)
@@ -293,6 +307,11 @@ namespace HackedDesign
                     animator.SetTrigger("Shoot");
                 }
                 SelectNextHighestAvailableWeapon();
+
+                if (!enemy)
+                {
+                    AudioManager.Instance.PlayRifleSFX();
+                }
             }
         }
 
@@ -332,6 +351,10 @@ namespace HackedDesign
                 animator.SetTrigger("Spear Throw");
             }
             SelectNextHighestAvailableWeapon();
+            if(!enemy)
+            {
+                AudioManager.Instance.PlayMolotovSFX();
+            }            
         }
 
         private void EnemyAttack(string name, WeaponType type, Vector3 target, float range, float missChance, int amount)

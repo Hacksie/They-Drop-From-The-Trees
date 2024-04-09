@@ -218,7 +218,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  collider: {fileID: 6074311585045160833}
+  rb: {fileID: 0}
 --- !u!114 &7964594594083262672
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -274,7 +274,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 2
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120

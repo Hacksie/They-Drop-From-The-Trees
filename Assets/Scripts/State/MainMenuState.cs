@@ -21,6 +21,7 @@ namespace HackedDesign
 
         public void Begin()
         {
+            AudioManager.Instance.PlayMenuMusic(true);
             Game.Instance.Reset();
             this.mainMenuPanel.Show();
             mainCamera.gameObject.SetActive(false);
@@ -31,6 +32,7 @@ namespace HackedDesign
 
         public void End()
         {
+            AudioManager.Instance.PlayMenuMusic(false);
             mainCamera.gameObject.SetActive(true);
             menuCamera.gameObject.SetActive(false);
             this.mainMenuPanel.Hide();

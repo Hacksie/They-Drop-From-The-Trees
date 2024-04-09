@@ -17,6 +17,17 @@ namespace HackedDesign
             Instance = this;
         }
 
+        public void Reset()
+        {
+            foreach(var enemy in enemies)
+            {
+                enemy.gameObject.SetActive(false);
+                Destroy(enemy.gameObject);
+            }
+
+            enemies.Clear();
+        }
+
         public void SpawnRandom(Vector3 position, Vector3 direction)
         {
             var go = Instantiate(enemyPrefabs[Random.Range(0, enemyPrefabs.Count)], position, Quaternion.identity, this.transform);

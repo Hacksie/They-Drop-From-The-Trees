@@ -18,22 +18,25 @@ namespace HackedDesign.UI
                     death = "You burnt to a crisp in the Aussie sun.";
                     break;
                 case DeathReason.DiedOfThirst:
-                    death = "You died of thirst";
+                    death = "You died of thirst under the Aussie sun.";
                     break;
                 case DeathReason.Bitten:
-                    death = "You were bitten to death by the vicious wildlife.";
+                    death = "You were bitten to death by a " + GameData.Instance.deathWho + ".";
                     break;
+                case DeathReason.Punched:
+                    death = "You were punched to death by a " + GameData.Instance.deathWho + ".";
+                    break;                    
                 case DeathReason.Clawed:
-                    death = "You were clawed to death by the vicious wildlife.";
+                    death = "You were clawed to death by a " + GameData.Instance.deathWho + ".";
                     break;
                 case DeathReason.BurntAlive:
                     death = "You were burnt alive by fire.";
                     break;
                 case DeathReason.Killed:
-                    death = "Something killed you";
+                    death = "Something killed you.";
                     break;
                 case DeathReason.Lightning:
-                    death = "You were struck my lightning and killed instantly. Such is life in the Aussie outback.";
+                    death = "You were struck by lightning and died instantly. Such is life in the Aussie outback.";
                     break;
                 case DeathReason.NotDead:
                 default:

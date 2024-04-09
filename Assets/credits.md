@@ -32,17 +32,23 @@ https://www.behance.net/khurasan
 My web:
 www.khurasanstudio.com
 
+# Google
+Weather Icons - (https://fonts.google.com)
+
 # Blink Studios
 Free 32 RPG Animations (https://assetstore.unity.com/packages/3d/animations/free-32-rpg-animations-215058)
 
 # Kenney.NL
+License (Creative Commons Zero, CC0)
+http://creativecommons.org/publicdomain/zero/1.0/
+
 UI Borders - (https://kenney.nl/assets/fantasy-ui-borders)
 Lightning Sprite - (https://kenney.nl/assets/particle-pack)
 
 # Synty
 Character Models - (https://syntystore.com/products/polygon-explorer-kit)
 Props - (https://assetstore.unity.com/packages/essentials/tutorial-projects/polygon-starter-pack-low-poly-3d-art-by-synty-156819)
-Flame Particles - (https://assetstore.unity.com/packages/vfx/particles/simple-fx-cartoon-particles-67834)
+
 
 # Background Sounds 
 2011-06-06-birds-and-breeze-royal-national-park-nsw-australia-16743 (https://pixabay.com/sound-effects/2011-06-06-birds-and-breeze-royal-national-park-nsw-australia-16743/)

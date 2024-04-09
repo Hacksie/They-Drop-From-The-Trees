@@ -189,7 +189,7 @@ MonoBehaviour:
   detectionRadius: 20
   attackRadius: 4
   preferredTerrain: []
-  health: 40
+  health: 30
   rotateSpeed: 60
   weapons: {fileID: 3401631671882533280}
   curve:
@@ -216,7 +216,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  collider: {fileID: 5310042604734974357}
+  rb: {fileID: 0}
 --- !u!114 &-5469442650502132139
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -272,7 +272,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 5
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120

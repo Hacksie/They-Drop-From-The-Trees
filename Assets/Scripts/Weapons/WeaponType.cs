@@ -9,6 +9,7 @@ namespace HackedDesign
         Molotov,
         Bite,
         Claw,
-        Fire
+        Fire,
+        Lightning
     }
 }

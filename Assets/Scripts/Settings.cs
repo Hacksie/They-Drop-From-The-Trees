@@ -7,6 +7,7 @@ namespace HackedDesign
     [CreateAssetMenu(fileName = "Settings", menuName = "State/Settings")]
     public class Settings : ScriptableObject
     {
+        public float playerRunSpeed = 10;
         public int maxHealth = 100;
         public int maxSunburn = 100;
         public int maxHydration = 100;
@@ -18,6 +19,7 @@ namespace HackedDesign
         public int startingMolotovs = 0;
 
         public float healthRecoverRate = 1f;
+        public WeatherType startingWeather = WeatherType.Overcast;
 
         public float weatherChangeRate = 30f;
         
@@ -28,7 +30,6 @@ namespace HackedDesign
         public List<WeaponSettings> weaponSettings;
         public List<WeatherSettings> weatherSettings;
 
-        public float treeEnemyChance = 0.5f;
         public float maxEnemiesPerTree = 3;
 
         public Vector3 playerSpawn = new Vector3(128,0,128);

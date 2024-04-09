@@ -23,5 +23,10 @@ namespace HackedDesign.UI
             Game.Instance.SelectCharacter(true);
             Game.Instance.SetLoading();
         }
+
+        public void QuitClick()
+        {
+            Game.Instance.Quit();
+        }
     }
 }

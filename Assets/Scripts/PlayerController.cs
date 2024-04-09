@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -35,6 +36,11 @@ namespace HackedDesign
         private InputAction weapon3Action;
         private InputAction weapon4Action;
         private InputAction weapon5Action;
+        private InputAction menuAction;
+
+
+        private Vector2 moveInput;
+        private Vector3 lookAtDirection;
 
 
         private RaycastHit[] raycastHits = new RaycastHit[1];
@@ -54,6 +60,7 @@ namespace HackedDesign
             }
 
             moveAction = playerInput.actions["Move"];
+            lookAction = playerInput.actions["Look"];
             mousePosAction = playerInput.actions["Mouse Position"];
             primaryAction = playerInput.actions["Primary Action"];
             secondaryAction = playerInput.actions["Secondary Action"];
@@ -62,6 +69,8 @@ namespace HackedDesign
             weapon3Action = playerInput.actions["Weapon 3"];
             weapon4Action = playerInput.actions["Weapon 4"];
             weapon5Action = playerInput.actions["Weapon 5"];
+            menuAction = playerInput.actions["Menu"];
+            menuAction.performed += MenuEvent;
             weapon1Action.performed += Weapon1ActionEvent;
             weapon2Action.performed += Weapon2ActionEvent;
             weapon3Action.performed += Weapon3ActionEvent;
@@ -72,14 +81,20 @@ namespace HackedDesign
         void Start()
         {
             Reset();
+            agent.Reset();
         }
 
         public void Reset()
         {
+            agent.Reset();
             SetCharacter();
-            //camp.UpdateCamp();
             weather.UpdateWeather();
             gameObject.SetActive(false);
+        }
+
+        private void MenuEvent(InputAction.CallbackContext context)
+        {
+            Game.Instance.State.Menu();
         }
 
         private void Weapon1ActionEvent(InputAction.CallbackContext context)
@@ -107,38 +122,55 @@ namespace HackedDesign
             weapons.SwitchWeapon(4);
         }
 
+        public void Pickup()
+        {
+            agent.Pickup();
+        }
+
         public void Damage(string attacker, WeaponType type, int amount)
         {
-            Debug.Log("player took :" +type.ToString() + " damage: " + amount + " from: " + attacker);
+            Debug.Log("player took :" + type.ToString() + " damage: " + amount + " from: " + attacker);
             GameData.Instance.health -= amount;
-            shake.Shake(0.5f,0.2f);
+            shake.Shake(0.5f, 0.2f);
+            agent.TakeHit();
 
 
-            if(GameData.Instance.health < 0)
+            if (GameData.Instance.health < 0)
             {
                 GameData.Instance.health = 0;
-                // FIXME: Set death reason
+    
                 agent.Die();
-                if(Game.Instance.Settings.invulnerable)
+                if (Game.Instance.Settings.invulnerable)
                 {
                     Debug.Log("Player would have died but is invulnerable");
                 }
                 else
                 {
                     Debug.Log("Player is dead");
-                    Game.Instance.SetDead();
+                    Game.Instance.Die(attacker, CalcDeathReason(type));
+                    // Game.Instance.SetDead();
                 }
             }
         }
 
-        // public void ToggleCamp()
-        // {
-        //     if (GameData.Instance.inShade)
-        //     {
-        //         GameData.Instance.isCamping = !GameData.Instance.isCamping;
-        //         //camp.UpdateCamp();
-        //     }
-        // }
+        private DeathReason CalcDeathReason(WeaponType type)
+        {
+            switch (type)
+            {
+                case WeaponType.Punch:
+                    return DeathReason.Punched;
+                case WeaponType.Fire:
+                    return DeathReason.BurntAlive;
+                case WeaponType.Bite:
+                    return DeathReason.Bitten;
+                case WeaponType.Claw:
+                    return DeathReason.Clawed;
+                case WeaponType.Lightning:
+                    return DeathReason.Lightning;
+            }
+
+            return DeathReason.Killed;
+        }
 
         public void SwitchCharacter(bool character)
         {
@@ -153,36 +185,57 @@ namespace HackedDesign
 
         public void UpdateBehaviour()
         {
-            //var moveInput = moveAction.ReadValue<Vector2>();
-
-            //var movement = (transform.forward * moveInput.y + transform.right * moveInput.x) * 3 * Time.deltaTime;
-
-
-            //characterController.Move(movement);
-
-
+            this.moveInput = moveAction.ReadValue<Vector2>();
             var mousePosition = GetMousePosition();
             var worldPos = GetWorldMousePosition(mousePosition);
-            
-            if (primaryAction.IsPressed() && !EventSystem.current.IsPointerOverGameObject() && !GameData.Instance.isCamping)
+
+            if (primaryAction.IsPressed() )
             {
                 agent.MoveTo(worldPos);
             }
 
-            if (secondaryAction.IsPressed() && !GameData.Instance.isCamping)
+            if (secondaryAction.IsPressed() && !EventSystem.current.IsPointerOverGameObject())
             {
                 weapons.Attack(worldPos);
             }
 
+            /*
+            if(playerInput.currentControlScheme == "Gamepad")
+            {
+                var look = lookAction.ReadValue<Vector2>();
+                var lookDirection = Quaternion.AngleAxis(45, Vector3.up) * new Vector3(look.x, 0, look.y);
+                //Vector3 lookDirection = Vector3.right * look.x + Vector3.forward * look.y;
+                
+                agent.Move(this.moveInput, lookDirection);
+                if(lookDirection.magnitude > 0)
+                {
+                    this.lookAtDirection = lookDirection;
+                }
+
+                agent.LookAt = transform.position + (lookAtDirection * 20) + lookAtOffset;
+                
+            }
+            else
+            {
+                agent.Move(this.moveInput, new Vector3(worldPos.x, 0, worldPos.z) - new Vector3(transform.position.x, 0, transform.position.z));
+                agent.LookAt = worldPos + lookAtOffset;
+            }*/
+
             agent.LookAt = worldPos + lookAtOffset;
+            
             agent.UpdateBehaviour();
             weather.UpdateWeather();
             camp.UpdateBehaviour();
+            
+
+
         }
 
         public void FixedUpdateBehaviour()
         {
-
+            //this.moveInput = moveAction.ReadValue<Vector2>();
+            //Debug.Log(this.moveInput);
+            //agent.Move(moveInput);
         }
 
         public void SelectWeapon(int weapon)
@@ -198,7 +251,6 @@ namespace HackedDesign
 
         private void SetCharacter()
         {
-            Debug.Log("Set char");
             maleCharacter.ForEach(e => e.SetActive(!GameData.Instance.isCamping && !character));
             femaleCharacter.ForEach(e => e.SetActive(!GameData.Instance.isCamping && character));
         }

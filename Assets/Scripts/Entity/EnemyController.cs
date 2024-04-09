@@ -66,7 +66,7 @@ namespace HackedDesign
         }
 
         /// <summary>
-        /// Wait 2 seconds for the spawn animation to finish before enabling the nav agent
+        /// Wait 1.5 seconds for the spawn animation to finish before enabling the nav agent
         /// </summary>
         /// <returns></returns>
         IEnumerator SpawnAnimation()
@@ -84,13 +84,14 @@ namespace HackedDesign
 
                 if (distanceToPlayer <= attackRadius)
                 {
-                    agent.Stop();
+                    agent.Stop(true);
                     LookAt(Game.Instance.Player.transform.position);
                     weapons.Attack(Game.Instance.Player.transform.position);
                 }
                 else if (distanceToPlayer <= detectionRadius)
                 {
                     agent.MoveTo(Game.Instance.Player.transform.position);
+                    agent.Stop(false);
                     LookAt(Game.Instance.Player.transform.position);
                 }
             }

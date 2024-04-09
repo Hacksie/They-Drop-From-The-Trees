@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace HackedDesign
@@ -36,6 +37,17 @@ namespace HackedDesign
                 currentWeatherTime = 0;
                 var nextWeather = Random.Range(0, 4);
                 GameData.Instance.currentWeather = (WeatherType)nextWeather;
+
+                if(GameData.Instance.currentWeather == WeatherType.Rain || GameData.Instance.currentWeather== WeatherType.Storm)
+                {
+                    Debug.Log("Play rain");
+                    AudioManager.Instance.PlayRainMusic(true);
+                }
+                else
+                {
+                    Debug.Log("Stop rain");
+                    AudioManager.Instance.PlayRainMusic(false);
+                }
                 
                 if (GameData.Instance.currentWeather == WeatherType.Storm)
                 {
@@ -76,7 +88,7 @@ namespace HackedDesign
 
             if (GameData.Instance.sunburn >= Game.Instance.Settings.maxSunburn)
             {
-                Game.Instance.Die(DeathReason.BurntToCrisp);
+                Game.Instance.Die("The Sun", DeathReason.BurntToCrisp);
             }
         }
 
@@ -87,7 +99,7 @@ namespace HackedDesign
             GameData.Instance.hydration = Mathf.Clamp(GameData.Instance.hydration, 0, Game.Instance.Settings.maxHydration);
             if (GameData.Instance.hydration <= 0)
             {
-                Game.Instance.Die(DeathReason.DiedOfThirst);
+                Game.Instance.Die("The Sun", DeathReason.DiedOfThirst);
             }
         }
 
